@@ -12,8 +12,6 @@ scenarios:
       path: /my/path/
       profile: myprofile
     default-address: http://my.host
-    headers:
-        x-uw-act-as: me
     requests:
     - url: ${path}
       method: POST
