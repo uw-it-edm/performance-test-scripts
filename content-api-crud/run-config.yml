@@ -81,3 +81,10 @@ reporting:
 
 settings:
   artifacts-dir: ./results/%Y-%m-%d_%H-%M-%S
+
+services:
+- module: shellexec
+  prepare:
+  - mkdir ./out
+  post-process:
+  - rm -r ./out
