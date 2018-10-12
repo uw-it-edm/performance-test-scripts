@@ -1,14 +1,15 @@
-**Performance Test Scripts**
 
-**Setup**
+# Performance Test Scripts
+
+## Setup 
 
 Install [Taurus](https://gettaurus.org/docs/Installation/)
     
     brew install bzt
 
-**Run**
+## Run
 
-*content-api-crud*
+### content-api-crud
 
 1. `cd content-api-crud`
 2. Create `system.properties` file and provide the keystore path and password (see `system.properties.example`)
@@ -29,6 +30,6 @@ For example, to run the same test with 10 concurrent threads:
     bzt ./run-config.yml -o execution.concurrency=10
 ```
 
-**Reporting**
+## Reporting
 
 Results are written to `results/[timestamp]/kpi.jtl`.  
