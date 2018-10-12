@@ -1,0 +1,2 @@
+javax.net.ssl.keyStore=path_to_jks
+javax.net.ssl.keyStorePassword=password

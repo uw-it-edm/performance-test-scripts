@@ -1,0 +1,83 @@
+execution:
+- concurrency: 1
+  iterations: 100
+  hold-for: 0s
+  ramp-up: 0s
+  scenario: content
+
+scenarios:
+  content:
+    think-time: 100ms # delay between each request
+    variables:
+      path: /my/path/
+      profile: myprofile
+    default-address: http://my.host
+    requests:
+    - url: ${path}
+      method: POST
+      label: 01 Create New
+      upload-files:
+      - param: attachment
+        path: ./payload/sample-file.pdf
+      - param: document
+        path: ./out/create-item-payload.json
+      assert:
+      - contains: 200
+        subject: http-code
+      extract-jsonpath:
+        id: $.id
+      jsr223:
+      - language: javascript
+        script-file: ./scripts/updateCreatePayload.js
+        execute: before
+    - url: ${path}/${id}
+      method: GET
+      label: 02 Read
+      assert:
+      - contains: 200
+        subject: http-code
+      extract-jsonpath:
+        response: $
+      jsr223:
+        language: javascript
+        script-file: ./scripts/writeResponseToFile.js
+        execute: after
+    - url: ${path}
+      method: POST
+      label: 03 Update Metadata Only
+      upload-files:
+      - param: document
+        path: ./out/update-item.json
+      assert:
+      - contains: 200
+        subject: http-code
+    - url: ${path}
+      method: POST
+      label: 04 Update Metadata And File
+      upload-files:
+      - param: document
+        path: ./out/update-item-2.json
+      - param: attachment
+        path: ./payload/sample-file.pdf
+      assert:
+      - contains: 200
+        subject: http-code
+      jsr223:
+        language: javascript
+        script-file: ./scripts/updateRevisionId.js
+        execute: before
+    - if: '"${path}".indexOf("content2") == -1'
+      then:
+      - url: ${path}/${id}
+        method: DELETE
+        label: 05 Delete
+        assert:
+        - contains: 200
+          subject: http-code
+
+reporting:
+- module: final-stats
+- module: console
+
+settings:
+  artifacts-dir: ./results/%Y-%m-%d_%H-%M-%S
