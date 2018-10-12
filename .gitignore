@@ -1,0 +1,10 @@
+# temporary files
+out/
+
+# test results
+results/
+
+#property files
+*/system.properties
+
+/.idea/
