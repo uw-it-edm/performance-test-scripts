@@ -66,14 +66,12 @@ scenarios:
         language: javascript
         script-file: ./scripts/updateRevisionId.js
         execute: before
-    - if: '"${path}".indexOf("content2") == -1'
-      then:
-      - url: ${path}/${id}
-        method: DELETE
-        label: 05 Delete
-        assert:
-        - contains: 200
-          subject: http-code
+    - url: ${path}/${id}
+      method: DELETE
+      label: 05 Delete
+      assert:
+      - contains: 200
+        subject: http-code
 
 reporting:
 - module: final-stats
@@ -88,3 +86,12 @@ services:
   - mkdir ./out
   post-process:
   - rm -r ./out
+
+modules:
+  system-properties:
+    jmeter.reportgenerator.report_tile: "WebCenter Performance Dashboard - Sprint 112"
+    jmeter.reportgenerator.apdex_per_transaction: "'01 Create New':1200|3000;\
+    '02 READ':700|2000;\
+    '03 Update Metadata Only':1200|4000;\
+    '04 Update Metadata And File':1400|4000;\
+    '05 Delete':2000|6000;"
