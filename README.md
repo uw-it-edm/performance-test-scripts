@@ -14,7 +14,7 @@ Install [Taurus](https://gettaurus.org/docs/Installation/)
 `run-config.yml` runs a all CRUD actions on content-api.
 1. `cd content-api-crud`
 2. Create `system.properties` file and provide the keystore path and password (see `system.properties.example`)
-3. Execute `bzt` and override the corresponding values for host, path, headers, profile. 
+3. Execute `bzt ./run-config.yml` and override the corresponding values for host, path, headers, profile. 
 Adding `-report` generates a temporary online report.  
 ```
     bzt ./run-config.yml 
@@ -35,7 +35,7 @@ For example, to run the same test with 10 concurrent threads:
 
 1. Update `content-api-crud/data/id.csv` with list of ids to be deleted. 
     * This list can be manually generated or you can first run [Search](#search)
-1. Run `bzt` and override the corresponding values for host, path, headers.
+1. Run `bzt ./delete.yml` and override the corresponding values for host, path, headers.
 ```
 bzt ./delete.yml
 -o modules.jmeter.properties.hostname=my.host.name
@@ -53,7 +53,7 @@ scenarios.delete.data-sources.loop=true # loop over in case of end-of-file reach
 #### Search
 
 1. Create the search body payload file under `content-api-crud/payload/search-body.json`
-1. Run `bzt` and override the corresponding values for host, path, headers, search index.
+1. Run `bzt ./search.yml` and override the corresponding values for host, path, headers, search index.
 ```
 bzt ./search.yml 
 -o modules.jmeter.properties.hostname=my.host.name
@@ -62,6 +62,15 @@ bzt ./search.yml
 -o scenarios.search.variables.index=my-search-index
 ```
 * This will generate a list of ids under `out/id.csv`. This file can then be used for [Delete](#delete)
+* Additional optional config overrides: 
+```
+scenarios.search.requests.body-file=/path/file # path to body payload file [default: ./payload/search-body.json]
+```
+
 ## Reporting
 
 Results are written to `results/[timestamp]/kpi.jtl`.  
+To override this path:
+```
+settings.artifact-dir=path/myreports
+```
