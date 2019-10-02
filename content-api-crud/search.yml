@@ -23,8 +23,7 @@ scenarios:
       extract-jsonpath:
         id:
           jsonpath: $.searchResults[*].id
-          match-no: -1
-        totalCount: $.totalCount
+          match-no: -1 # return all values
       jsr223:
         language: javascript
         script-file: ./scripts/writeIdToFile.js
