@@ -1,0 +1,39 @@
+execution:
+- concurrency: 1
+  iterations: 20
+  hold-for: 0s
+  ramp-up: 0s
+  scenario: delete
+
+scenarios:
+  delete:
+    think-time: 100ms # delay between each request
+    default-address: https://${__P(hostname)}
+    variables:
+      path: /my/delete/path
+    data-sources:
+    - path: ./data/id.csv
+      variable-name: id
+      loop: false
+    requests:
+    - url: ${path}/${id}
+      method: DELETE
+      label: Delete
+      assert:
+      - contains: 200
+        subject: http-code
+
+reporting:
+- module: final-stats
+- module: console
+
+settings:
+  artifacts-dir: ./results/%Y-%m-%d_%H-%M-%S
+
+modules:
+  jmeter:
+    properties:
+      hostname: my.host.name
+  system-properties:
+    jmeter.reportgenerator.report_tile: "Bulk Delete"
+    jmeter.reportgenerator.apdex_per_transaction: "'Bulk Delete':2000|6000;"
