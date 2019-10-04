@@ -19,9 +19,6 @@ scenarios:
     - url: ${path}/${id}
       method: DELETE
       label: Delete
-      assert:
-      - contains: 200
-        subject: http-code
 
 reporting:
 - module: final-stats
