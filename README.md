@@ -11,7 +11,7 @@ Install [Taurus](https://gettaurus.org/docs/Installation/)
 
 ### content-api-crud
 
-`run-config.yml` runs a all CRUD actions on content-api.
+`run-config.yml` runs all CRUD actions on content-api.
 1. `cd content-api-crud`
 2. Create `system.properties` file and provide the keystore path and password (see `system.properties.example`)
 3. Execute `bzt ./run-config.yml` and override the corresponding values for host, path, headers, profile. 
