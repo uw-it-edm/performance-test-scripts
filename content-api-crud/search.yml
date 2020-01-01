@@ -1,0 +1,44 @@
+execution:
+- concurrency: 1
+  hold-for: 0s
+  ramp-up: 0s
+  scenario: search
+
+scenarios:
+  search:
+    default-address: https://${__P(hostname)}
+    variables:
+      path: /my/path/
+      index: myindex
+    requests:
+    - url: ${path}/${index}
+      method: POST
+      label: Search
+      headers:
+        Content-Type: application/json
+      body-file: ./payload/search-body.json
+      assert:
+        - contains: 200
+          subject: http-code
+      extract-jsonpath:
+        id:
+          jsonpath: $.searchResults[*].id
+          match-no: -1 # return all values
+      jsr223:
+        language: javascript
+        script-file: ./scripts/writeIdToFile.js
+        execute: after
+
+reporting:
+- module: final-stats
+- module: console
+
+settings:
+  artifacts-dir: ./results/%Y-%m-%d_%H-%M-%S
+
+modules:
+  jmeter:
+    properties:
+      hostname: my.host.name
+  system-properties:
+    jmeter.reportgenerator.report_tile: "Search"

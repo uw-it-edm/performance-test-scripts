@@ -1,0 +1,15 @@
+{
+  "filters": [
+    {
+      "field": "metadata.field1",
+      "term": "value1"
+    },
+    {
+      "field": "metadata.field2",
+      "term": "value2"
+    }
+  ],
+  "from": 0,
+  "page": 0,
+  "pageSize": 50
+}
