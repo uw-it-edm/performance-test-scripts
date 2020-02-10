@@ -1,0 +1,69 @@
+execution:
+- scenario: create
+  concurrency: 1
+  iterations: 10
+  hold-for: 0s
+  ramp-up: 0s
+- scenario: create-search
+  concurrency: 1
+  iterations: 10
+  hold-for: 0s
+  ramp-up: 0s
+
+scenarios:
+  create:
+    think-time: 0ms # delay between each request
+    variables:
+      create-path: /create/path
+    default-address: https://${__P(hostname)}
+    requests:
+      - url: ${create-path}
+        method: POST
+        label: Bulk Create
+        upload-files:
+          - param: attachment
+            path: ./payload/sample-file.pdf
+          - param: document
+            path: ./payload/create-body.json
+        extract-jsonpath:
+          id: $.id
+  create-search:
+    think-time: 0ms # delay between each request
+    keepalive: false # reuse same connection if true
+    variables:
+      create-path: /create/path
+      search-path: /search/path
+      index: searchindex
+      totalCount: 0
+    default-address: https://${__P(hostname)}
+    requests:
+    - url: ${create-path}
+      method: POST
+      label: Bulk Create
+      upload-files:
+        - param: attachment
+          path: ./payload/sample-file.pdf
+        - param: document
+          path: ./payload/create-body.json
+      extract-jsonpath:
+        id: $.id
+    - while: ${__javaScript("${totalCount}" == 0,)}
+      do:
+      - url: ${search-path}/${index}
+        method: POST
+        label: Search
+        headers:
+          Content-Type: application/json
+        body: '{"filters":[{"field":"id","term":"${id}"}]}'
+        extract-jsonpath:
+          totalCount:
+            jsonpath: $.totalCount
+    - set-variables:
+        totalCount: 0
+
+reporting:
+- module: final-stats
+- module: console
+
+settings:
+  artifacts-dir: ./results/%Y-%m-%d_%H-%M-%S
