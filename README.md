@@ -67,6 +67,32 @@ bzt ./search.yml
 scenarios.search.requests.body-file=/path/file # path to body payload file [default: ./payload/search-body.json]
 ```
 
+#### Create and Search
+
+Two scenarios are run concurrently:
+1. Create new items
+2. Loop to continuously call Search until newly created item is found
+
+To run: 
+
+Run `bzt ./create-and-search.yml` and override the corresponding values for host, path, headers, search index.
+```
+bzt ./create-and-search.yml \
+-o modules.jmeter.properties.hostname=my.host.name \
+-o scenarios.create.headers="key: 'value'" \
+-o scenarios.create.variables.create-path=/create/path \
+-o scenarios.create-search.headers="key: 'value'" \
+-o scenarios.create-search.variables.create-path=/create/path \
+-o scenarios.create-search.variables.search-path=/search/path \
+-o scenarios.create-search.variables.index=search-index-name \
+```
+
+You can also override the concurrency and iterations, e.g.:
+```
+-o execution.0.concurrency=2
+-o execution.0.iterations=2000
+```
+
 ## Reporting
 
 Results are written to `results/[timestamp]/kpi.jtl`.  
