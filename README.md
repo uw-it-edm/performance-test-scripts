@@ -74,8 +74,9 @@ Two scenarios are run concurrently:
 2. Loop to continuously call Search until newly created item is found
 
 To run: 
-
-Run `bzt ./create-and-search.yml` and override the corresponding values for host, path, headers, search index.
+1. Create the create body payload file under `content-api-crud/payload/create-body.json`. 
+See example in `content-api-crud/payload/create-item-template.json`
+1. Run `bzt ./create-and-search.yml` and override the corresponding values for host, path, headers, search index.
 ```
 bzt ./create-and-search.yml \
 -o modules.jmeter.properties.hostname=my.host.name \
@@ -87,10 +88,10 @@ bzt ./create-and-search.yml \
 -o scenarios.create-search.variables.index=search-index-name \
 ```
 
-You can also override the concurrency and iterations, e.g.:
+* Additional optional config overrides: :
 ```
--o execution.0.concurrency=2
--o execution.0.iterations=2000
+-o execution.0.concurrency=2 # number of concurrent calls [default: 1]
+-o execution.0.iterations=2000 # number of iterations [default: 10]
 ```
 
 ## Reporting
