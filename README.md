@@ -104,7 +104,7 @@ To run:
 1. Run [Search](#search) to generate id file. 
 1. Create the create body payload file under `content-api-crud/payload/create-body.json`. 
 See example in `content-api-crud/payload/create-item-template.json`
-1. Run `bzt ./create-and-search.yml` and override the corresponding values for host, path, headers, search index.
+1. Run `bzt ./update-and-search.yml` and override the corresponding values for host, path, headers, search index.
 ```
 bzt ./update-and-search.yml \
 -o modules.jmeter.properties.hostname=my.host.name \
