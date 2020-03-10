@@ -1,12 +1,12 @@
 execution:
 - scenario: update
   concurrency: 1
-  iterations: 1
+  iterations: 10
   hold-for: 0s
   ramp-up: 0s
 - scenario: create-search
   concurrency: 1
-  iterations: 1
+  iterations: 10
   hold-for: 0s
   ramp-up: 0s
 
@@ -79,7 +79,7 @@ reporting:
 - module: console
 
 settings:
-  artifacts-dir: ./results/update-search-5000/%Y-%m-%d_%H-%M-%S
+  artifacts-dir: ./results/update-search/%Y-%m-%d_%H-%M-%S
 
 services:
 - module: shellexec
