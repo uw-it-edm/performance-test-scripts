@@ -128,3 +128,39 @@ To override this path:
 ```
 settings.artifact-dir=path/myreports
 ```
+## Distributed Testing
+Tests can also be run on remote/distributed test machine(s).
+The tests can be run from a master machine, which then distributes the load
+to remote/slave machine(s). Both master and slave machines must be in the same subnet.
+
+### Setup Remote Machine(s)
+
+Launch remote machine(s) on AWS EC2. See [Setup Remote Machines](https://wiki.cac.washington.edu/display/EBS/Performance+Testing)
+
+### Update Test Config
+In the test config yml file:
+1. Add `distributed` to the `execution` key:
+    ```
+    execution:
+    - concurrency: 1
+      ...
+      distributed:
+        - [remote_machine_private_ip_address_1]
+        - [remote_machine_private_ip_address_2]
+    ```
+1. Add jmeter property to turn off SSL: 
+    ```
+   modules:
+     jmeter:
+       properties:
+         server.rmi.ssl.disable: true
+    ``` 
+### Start Remote Jmeter Server(s)
+From the master machine, start the Jmeter servers on the remote machines, 
+`pem_file` is the private key file used to ssh to the remote machines:
+```
+./distributed-testing/start-remote-servers.sh pem_file remote_machine_public_ip_address_1 [remote_machine_public_ip_address_2]
+```
+### Run Tests
+From the master machine, follow the same instructions as running in regular mode documented above.
+Consolidated results from all remote machine(s) will be written as specified in [Reporting](## Reporting)

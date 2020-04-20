@@ -1,0 +1,22 @@
+#
+# This is bzt script to force jmeter installation. It is used by install-machine.sh
+# To execute manually: bzt install-bzt-jmeter.yml
+#
+execution:
+  - scenario: setupJmeter
+
+scenarios:
+  setupJmeter:
+    requests:
+      - url: http://www.google.com
+        label: Install Jmeter
+
+settings:
+  artifacts-dir: ./tmp
+
+modules:
+  jmeter:
+    properties:
+      hostname: test
+  console:
+    disable: true
