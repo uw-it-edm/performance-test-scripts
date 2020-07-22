@@ -15,8 +15,9 @@ settings:
   artifacts-dir: ./tmp
 
 modules:
+  # https://gettaurus.org/docs/JMeter/
   jmeter:
-    properties:
-      hostname: test
+    force-ctg: true # required for higher concurrency thread groups
+    detect-plugins: true
   console:
     disable: true
