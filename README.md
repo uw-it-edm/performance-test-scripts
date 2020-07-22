@@ -123,8 +123,8 @@ bzt ./update-and-search.yml \
 ```
 
 #### Search and Bulk Edit
-
-Run `bzt ./search-and-bulk-edit.yml` and override the corresponding values for host, paths, headers, search index.
+1. Create the search body payload file under `content-api-crud/payload/search-body.json`
+1. Run `bzt ./search-and-bulk-edit.yml` and override the corresponding values for host, paths, headers, search index.
 
 ```
 bzt ./search-and-bulk-edit.yml \
