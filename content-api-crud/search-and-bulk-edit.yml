@@ -1,0 +1,52 @@
+execution:
+  - scenario: search-bulk-edit
+    concurrency: 1
+    iterations: 10
+    hold-for: 0m
+    ramp-up: 0m
+
+scenarios:
+  search-bulk-edit:
+    default-address: https://${__P(hostname)}
+    think-time: 0ms # delay between each request
+    keepalive: false # reuse same connection if true
+    variables:
+      search-path: /search/path/
+      index: myindex
+      edit-path: /edit/path
+    requests:
+      - label: Search
+        url: ${search-path}/${index}
+        method: POST
+        headers:
+          Content-Type: application/json
+        body-file: ./payload/search-body.json
+        assert:
+          - contains: 200
+            subject: http-code
+        extract-jsonpath:
+          id:
+            jsonpath: $.searchResults[*].id
+            match-no: -1 # return all values
+          revisionId:
+            jsonpath: $.searchResults[*].metadata.RevisionId
+            match-no: -1
+        jsr223:
+        - language: javascript
+          script-file: ./scripts/writeIdToFile.js
+          execute: after
+        - language: javascript
+          script-file: ./scripts/writeBulkEditBody.js
+          execute: after
+      - label: Bulk Edit
+        url: ${edit-path}
+        method: POST
+        headers:
+          Content-Type: application/json
+        body-file: ./payload/bulk-edit-body.json
+
+reporting:
+  - module: final-stats
+
+settings:
+  artifacts-dir: ./results/search-bulk-edit/%Y-%m-%d_%H-%M-%S

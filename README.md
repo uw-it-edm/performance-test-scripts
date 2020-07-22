@@ -121,6 +121,28 @@ bzt ./update-and-search.yml \
 -o execution.0.concurrency=2 # number of concurrent calls [default: 1]
 -o execution.0.iterations=2000 # number of iterations [default: 10]
 ```
+
+#### Search and Bulk Edit
+1. Create the search body payload file under `content-api-crud/payload/search-body.json`
+1. Run `bzt ./search-and-bulk-edit.yml` and override the corresponding values for host, paths, headers, search index.
+
+```
+bzt ./search-and-bulk-edit.yml \
+-o modules.jmeter.properties.hostname=my.host.name \
+-o scenarios.search-bulk-edit.headers="key: 'value'" \
+-o scenarios.search-bulk-edit.variables.search-path=/search/path \
+-o scenarios.search-bulk-edit.variables.index=search-index-name \
+-o scenarios.search-bulk-edit.variables.edit-path=/bulk-edit/path \
+```
+
+* Additional optional config overrides: :
+```
+-o execution.0.concurrency=50 # number of concurrent calls [default: 1]
+-o execution.0.iterations=1 # number of iterations [default: 10]
+-o execution.0.ramp-up=5m # ramp-up time to reach target concurrency  [default: 0s]
+-o execution.0.hold-for=15m # time to hold target concurrency [default: 0s]
+```
+
 ## Reporting
 
 Results are written to `results/[timestamp]/kpi.jtl`.  
