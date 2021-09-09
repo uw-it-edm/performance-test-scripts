@@ -1,6 +1,6 @@
 # temporary files
 out/
-!/content-api-crud/data/id.csv
+/content-api-crud/data/id.csv
 
 # test results
 results/
