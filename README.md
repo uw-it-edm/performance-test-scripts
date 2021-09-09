@@ -152,8 +152,8 @@ settings.artifact-dir=path/myreports
 ```
 ## Distributed Testing
 Tests can also be run on remote/distributed test machine(s).
-The tests can be run from a master machine, which then distributes the load
-to remote/slave machine(s). Both master and slave machines must be in the same subnet.
+The tests can be run from a host machine, which then distributes the load
+to remote machine(s). Both host and remote machines must be in the same subnet.
 
 ### Setup Remote Machine(s)
 
